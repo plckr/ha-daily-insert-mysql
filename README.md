@@ -83,7 +83,7 @@ sensor:
     db_url: mysql://user:password@localhost/custom_data
     queries:
       - name: Sql value
-        query: "SELECT `value` FROM energy WHERE `date` = '2020-04-10';"
+        query: "SELECT `value` FROM energy_kwh WHERE `date` = '2020-04-10';"
         column: 'value'
         unit_of_measurement: 'kWh'
 ```
