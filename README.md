@@ -1,13 +1,13 @@
 # ha-daily-insert-mysql
 Designed to work with Home Assistant, but you can really use it wherever you want.
-Script to insert daily values into mysql db
-Publishes a value into a mysql table with the current date (per day), if date already exists, it'll overwrite the value.
+This script publishes a value into a mysql table with the current date (per day), if date already exists, it'll overwrite the value.
 If table doesn't exist, it'll create.
 
-This is very useful to have long time data in a low disk usage database.
+This is very useful to have long time data with very low disk usage database.
 Instead of recording the whole changes throughout the day, you only have a single value per day.
 
 **Note that it only accepts the value as FLOAT**
+I expect to implement it to more datatypes in some future
 
 **Ensure you have the database created, it only creates the table.**
 
@@ -22,19 +22,21 @@ Useful for:
 `python3 daily_insert_mysql.py --host=db_host(ip or hostname) --user=your_user --password=your_password --db=your_db --table=your_table --value your_value`
 
 ## Example with code for home assistant
-Here's an example to record a sensor value of the current electricity meter. The sensor resets everyday.
+Here's an example to record a sensor value of the current electricity meter.
+This sensor resets everyday, so we'll publish it whenever the sensor changes it's state.
 
 ### Configuration for MariaDB Addon
+This is to create the database, user and permissions into the addon
 
 ```
 databases:
   - custom_data
 logins:
-  - username: data_energy
+  - username: custom_data_user
     host: '%'
     password: teste
 rights:
-  - username: data_energy
+  - username: custom_data_user
     host: '%'
     database: custom_data
     grant: ALL PRIVILEGES ON
@@ -46,11 +48,11 @@ First `shell_command` is to install the dependency needed for the python script 
 ```
 shell_command:
   python_install_pymysql_dependency: "pip install pymysql"
-  energy_daily_insert: "python3 /config/daily_insert_mysql.py --host=core-mariadb --user=data_energy --password=teste --db=custom_data --table=energy_kwh --value {{ states.sensor.energy_daily.state }}"
+  energy_daily_insert: "python3 /config/daily_insert_mysql.py --host=core-mariadb --user=custom_data_user --password=teste --db=custom_data --table=energy_kwh --value {{ states.sensor.energy_daily_kwh.state }}"
 ```
 
 First `automation` is to install the dependency needed at startup. If it exist, it'll ignore, if not, it'll install.
-Sencond `automation`, everytime sensor changes its value. Publish it with current date.
+Second `automation`, everytime sensor changes its value. Publish it with current date.
 ```
 automation:
   - alias: "Energy install python pymysql dependency at startup"
@@ -64,7 +66,7 @@ automation:
     initial_state: true
     trigger:
       - platform: state
-        entity_id: sensor.energy_daily_insert
+        entity_id: sensor.energy_daily_kwh
     action:
       - service: shell_command.energy_daily_insert
 ```
