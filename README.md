@@ -12,11 +12,24 @@ I expect to implement it to more datatypes in some future
 **Ensure you have the database created, it only creates the table.**
 
 ## What can I do with this?
+This is what you achieve
+
+| date | value |
+| ------ | ------- |
+| 2020-04-06 | 15.5 |
+| 2020-04-07 | 16 |
+| 2020-04-08 | 14.8 |
+| 2020-04-09| 11.2 |
+| 2020-04-10 | 15.4 |
+
 Useful for:
 - publish daily values of current energy meter
 - publish an average of the temperature of the current day
-- publish if irrigation has started today or not **(Remember: this only allows float values, until for now. So for this it needs 0.0 or 1.0 for example)**
+- publish if irrigation has started today or not **(Remember: this only allows float values. So for this it needs 0.0 or 1.0 for example)**
 - etc...
+
+**[Optional]** you can have multiple columns and add the value to the column you want. [See this](#insert-values-into-different-column-names-in-the-same-table)
+If not mention `--col`, default column name is `value`
 
 ## Usage
 `python3 daily_insert_mysql.py --host=db_host(ip or hostname) --user=your_user --password=your_password --db=your_db --table=your_table --value your_value`
@@ -87,3 +100,14 @@ sensor:
         column: 'value'
         unit_of_measurement: 'kWh'
 ```
+
+## Insert values into different column names in the same table
+
+There's an optional argument `--col` which you can use it to mention to which column you want to save the value to.
+The column is added automatically if you specify the argument, if not it'll ignore it.
+If you created the table by yourself, ensure the other columns instead of the date has `ALLOW NULL` and `DEFAULT NULL`. If the table was created by this script, you don't need to worry.
+
+This was tested on MariaDB, I'm not sure if it'll work with MySQL versions
+
+Example:
+`python3 daily_insert_mysql.py --host=core-mariadb --user=data_energy --password=teste --db=custom_data --table=energy_kwh --value 3.4 --col fridge`
