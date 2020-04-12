@@ -7,7 +7,6 @@ This is very useful to have long time data with very low disk usage database.
 Instead of recording the whole changes throughout the day, you only have a single value per day.
 
 **Note that it only accepts the value as FLOAT**
-I expect to implement it to more datatypes in some future
 
 **Ensure you have the database created, it only creates the table.**
 
@@ -29,6 +28,7 @@ Useful for:
 - etc...
 
 **[Optional]** you can have multiple columns and add the value to the column you want. [See this](#insert-values-into-different-column-names-in-the-same-table)
+
 If not mention `--col`, default column name is `value`
 
 ## Usage
