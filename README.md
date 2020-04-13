@@ -13,16 +13,16 @@ Instead of recording the whole changes throughout the day, you only have a singl
 **Ensure you have the database created, it only creates the table.**
 
 ## TOC
-- [What can I do with this?](#what-can-i-do-with-this-)
+- [What can I do with this?](#what-can-i-do-with-this)
 - [Usage](#usage)
 - [Example with code for home assistant](#example-with-code-for-home-assistant)
   - [Configuration for MariaDB Addon](#configuration-for-mariadb-addon)
   - [Insert values](#insert-values)
-  - [How can I return the values?](#how-can-i-return-the-values-)
-    - [Method 1: Home Assistant](#method-1--home-assistant)
-    - [Method 2: Grafana](#method-2--grafana)
+  - [How can I return the values?](#how-can-i-return-the-values)
+    - [Method 1: Home Assistant](#method-1-home-assistant)
+    - [Method 2: Grafana](#method-2-grafana)
 - [Insert values into different column names in the same table](#insert-values-into-different-column-names-in-the-same-table)
-- [Pro tip: Use template shell_command](#pro-tip--use-template-shell-command)
+- [Pro tip: Use template shell_command](#pro-tip-use-template-shell_command)
 
 ## What can I do with this?
 With 365 rows of data, neither 500KB you'll use :boom:
