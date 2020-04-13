@@ -111,3 +111,46 @@ This was tested on MariaDB, I'm not sure if it'll work with MySQL versions
 
 Example:
 `python3 daily_insert_mysql.py --host=core-mariadb --user=data_energy --password=teste --db=custom_data --table=energy_kwh --value 3.4 --col fridge`
+
+## Pro tip: Use template shell_command
+```
+automation:
+  - alias: "Energy daily insert values to database"
+    initial_state: true
+    trigger:
+      - platform: state
+        entity_id: sensor.energy_daily_simples
+      - platform: state
+        entity_id: sensor.energy_daily_fridge
+      - platform: state
+        entity_id: sensor.energy_daily_dishwasher
+      - platform: state
+        entity_id: sensor.energy_daily_drying_machine
+      - platform: state
+        entity_id: sensor.energy_daily_washing_machine
+      - platform: state
+        entity_id: sensor.energy_daily_hot_water_tank
+    action:
+      - service: shell_command.daily_insert_mysql_template
+        data_template:
+          table: energy_kwh
+          value: >
+            {{ trigger.to_state.state }}
+          column: >
+            {% if trigger.entity_id == "sensor.energy_daily_simples" %}
+              total
+            {% elif trigger.entity_id == "sensor.energy_daily_fridge" %}
+              fridge
+            {% elif trigger.entity_id == "sensor.energy_daily_dishwasher" %}
+              dishwasher
+            {% elif trigger.entity_id == "sensor.energy_daily_drying_machine" %}
+              drying_machine
+            {% elif trigger.entity_id == "sensor.energy_daily_washing_machine" %}
+              washing_machine
+            {% elif trigger.entity_id == "sensor.energy_daily_hot_water_tank" %}
+              hot_water_tank
+            {% endif %}
+
+shell_command:
+  daily_insert_mysql: "python3 /config/py_scripts/daily_insert_mysql.py --host=core-mariadb --user=data_energy --password=teste --db=custom_data --table={{ table }} --value={{ value }} {{ '--col='+column if column is defined }}"
+```
