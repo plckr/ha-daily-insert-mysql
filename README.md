@@ -6,9 +6,23 @@ If table doesn't exist, it'll create.
 This is very useful to have long time data with very low disk usage database.
 Instead of recording the whole changes throughout the day, you only have a single value per day.
 
+**For most of people, this could be a replacement to InfluxDB.**
+
 **Note that it only accepts the value as FLOAT**
 
 **Ensure you have the database created, it only creates the table.**
+
+## TOC
+- [What can I do with this?](#what-can-i-do-with-this-)
+- [Usage](#usage)
+- [Example with code for home assistant](#example-with-code-for-home-assistant)
+  - [Configuration for MariaDB Addon](#configuration-for-mariadb-addon)
+  - [Insert values](#insert-values)
+  - [How can I return the values?](#how-can-i-return-the-values-)
+    - [Method 1: Home Assistant](#method-1--home-assistant)
+    - [Method 2: Grafana](#method-2--grafana)
+- [Insert values into different column names in the same table](#insert-values-into-different-column-names-in-the-same-table)
+- [Pro tip: Use template shell_command](#pro-tip--use-template-shell-command)
 
 ## What can I do with this?
 With 365 rows of data, neither 500KB you'll use :boom:
@@ -25,7 +39,7 @@ This is what you achieve
 
 Useful for:
 - publish daily values of current energy meter
-- publish an average of the temperature of the current day
+- publish an *average*, *max* or *min* of the temperature of the current day
 - keep track of how many hours you watch tv for a day
 - publish if irrigation has started today or not **(Remember: this only allows float values. So for this it needs 0.0 or 1.0 for example)**
 - etc... be creative...
@@ -58,6 +72,8 @@ rights:
     grant: ALL PRIVILEGES ON
 ```
 
+Use your own `username` and `password`
+
 ### Insert values
 
 First `shell_command` is to install the dependency needed for the python script to work. More below we will create an automation to run it every startup.
@@ -88,7 +104,7 @@ automation:
 ```
 
 ### How can I return the values?
-
+#### Method 1: Home Assistant
 You can use the [Home Assistant SQL integration](https://www.home-assistant.io/integrations/sql/) to get the values from the database
 
 If you dive into SQL Queries, you will understand that you can do a lot of things with it.
@@ -103,6 +119,9 @@ sensor:
         column: 'value'
         unit_of_measurement: 'kWh'
 ```
+
+#### Method 2: Grafana
+You can use MySQL databases in Grafana, just like InfluxDB, but instead you'll have a very compact database.
 
 ## Insert values into different column names in the same table
 
