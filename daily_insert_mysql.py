@@ -27,15 +27,13 @@ def main(args):
       with connection.cursor() as cursor:
         sql = """CREATE TABLE IF NOT EXISTS `{table}` (
           `date` DATE NOT NULL,
-          `value` FLOAT NULL DEFAULT NULL,
           PRIMARY KEY (`date`))
           COLLATE='utf8mb4_unicode_ci'
           ENGINE=InnoDB;""".format(table=args.table)
         cursor.execute(sql)
-
-        if (colname != 'value'):
-          sql = "ALTER TABLE `{table}` ADD COLUMN IF NOT EXISTS `{col}` FLOAT NULL DEFAULT NULL;".format(table=args.table, col=colname)
-          cursor.execute(sql)
+        
+        sql = "ALTER TABLE `{table}` ADD COLUMN IF NOT EXISTS `{col}` FLOAT NULL DEFAULT NULL;".format(table=args.table, col=colname)
+        cursor.execute(sql)
 
         sql = "INSERT INTO `{table}` (`date`, `{col}`) VALUES (%s, %s) ON DUPLICATE KEY UPDATE {col}=%s;".format(table=args.table, col=colname)
         sql_data = (dt.strftime("%Y-%m-%d"), args.value, args.value)

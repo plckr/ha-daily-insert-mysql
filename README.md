@@ -11,6 +11,8 @@ Instead of recording the whole changes throughout the day, you only have a singl
 **Ensure you have the database created, it only creates the table.**
 
 ## What can I do with this?
+With 365 rows of data, neither 500KB you'll use :boom:
+
 This is what you achieve
 
 | date | value |
@@ -24,10 +26,11 @@ This is what you achieve
 Useful for:
 - publish daily values of current energy meter
 - publish an average of the temperature of the current day
+- keep track of how many hours you watch tv for a day
 - publish if irrigation has started today or not **(Remember: this only allows float values. So for this it needs 0.0 or 1.0 for example)**
-- etc...
+- etc... be creative...
 
-**[Optional]** you can have multiple columns and add the value to the column you want. [See this](#insert-values-into-different-column-names-in-the-same-table)
+:star: **[Optional]** you can have multiple columns and add the value to the column you want. [See this](#insert-values-into-different-column-names-in-the-same-table)
 
 If not mention `--col`, default column name is `value`
 
