@@ -12,7 +12,7 @@ def main(args):
     warnings.simplefilter("ignore")
     
     dt = datetime.datetime.today() + datetime.timedelta(days = args.date_delta)
-    colname = (args.col if args.col is not None else "value")
+    colname = args.col
 
     connection = pymysql.connect(
       host=args.host,
@@ -54,7 +54,7 @@ if __name__ == "__main__":
   parser.add_argument('--db', type=str, required=True, help='REQUIRED: DB Name')
   parser.add_argument('--table', type=str, required=True, help='REQUIRED: DB Table')
   parser.add_argument('--value', type=float, required=True, help='REQUIRED: Value to insert')
-  parser.add_argument('--col', type=str, required=False, help='OPTIONAL: Column name. Defaults to `value`')
+  parser.add_argument('--col', type=str, required=False, help='OPTIONAL: Column name. Defaults to `value`', default = "value")
   parser.add_argument('--date-delta', type=int, required=False, help='OPTIONAL: Date delta, positive integer increment days, negative decrese days. Defaults to `0`', default = 0)
   args = parser.parse_args()
   
