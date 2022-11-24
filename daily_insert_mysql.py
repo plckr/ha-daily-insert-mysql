@@ -10,8 +10,8 @@ import warnings
 def main(args):
   with warnings.catch_warnings():
     warnings.simplefilter("ignore")
-
-    dt = datetime.datetime.today()
+    
+    dt = datetime.datetime.today() + datetime.timedelta(days = args.date_delta)
     colname = (args.col if args.col is not None else "value")
 
     connection = pymysql.connect(
@@ -55,6 +55,7 @@ if __name__ == "__main__":
   parser.add_argument('--table', type=str, required=True, help='REQUIRED: DB Table')
   parser.add_argument('--value', type=float, required=True, help='REQUIRED: Value to insert')
   parser.add_argument('--col', type=str, required=False, help='OPTIONAL: Column name. Defaults to `value`')
+  parser.add_argument('--date-delta', type=int, required=False, help='OPTIONAL: Date delta, positive integer increment days, negative decrese days. Defaults to `0`', default = 0)
   args = parser.parse_args()
   
   try:
